@@ -12,11 +12,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -42,10 +53,36 @@ import com.example.tutee.ui.theme.TUTEETheme
 fun AddTutorScreen(navController:NavHostController){
     Column(
         modifier = Modifier
-            .padding(15.dp)
+            .verticalScroll(rememberScrollState())
             .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        //top up bar
+        TopAppBar(title = { Text(text = "TUTEE", color = Color.Black) },
+            colors = TopAppBarDefaults.mediumTopAppBarColors(Color.Cyan),
+            navigationIcon = {
+                IconButton(onClick = {
+                }) {
+                    Icon(imageVector = Icons.Default.ArrowBack,
+                        contentDescription = "Arowback",
+                        tint = Color.Magenta)
+                }
+            },
+            actions = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Share,
+                        contentDescription = "share",
+                        tint = Color.Magenta)
+                }
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(imageVector = Icons.Default.Settings,
+                        contentDescription = "settings",
+                        tint = Color.Magenta)
+                }
+
+            }
+        )
+        //end of top up bar
         Text(
             text = "Add Credentials",
             fontSize = 40.sp,
@@ -53,25 +90,25 @@ fun AddTutorScreen(navController:NavHostController){
             fontFamily = FontFamily.Cursive
         )
 
-        var TutorName by remember { mutableStateOf("") }
-        var TutorProfession by remember { mutableStateOf("") }
-        var StudyPrice by remember { mutableStateOf("") }
+        var tutorName by remember { mutableStateOf("") }
+        var profession by remember { mutableStateOf("") }
+        var studyPrice by remember { mutableStateOf("") }
         val context = LocalContext.current
 
         Spacer(modifier = Modifier.height(30.dp))
 
         OutlinedTextField(
-            value = TutorName,
-            onValueChange = { TutorName = it },
-            label = { Text(text = "Tutor Name *") },
+            value = tutorName,
+            onValueChange = { tutorName = it },
+            label = { Text(text = "Tutor name *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = TutorProfession,
-            onValueChange = { TutorProfession = it },
+            value = profession,
+            onValueChange = { profession = it },
             label = { Text(text = "Tutor Profession *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
@@ -79,8 +116,8 @@ fun AddTutorScreen(navController:NavHostController){
         Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedTextField(
-            value = StudyPrice,
-            onValueChange = { StudyPrice = it },
+            value = studyPrice,
+            onValueChange = { studyPrice = it },
             label = { Text(text = "Study price *") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
         )
@@ -92,7 +129,7 @@ fun AddTutorScreen(navController:NavHostController){
         //---------------------IMAGE PICKER START-----------------------------------//
 
         var modifier = Modifier
-        ImagePicker(modifier,context, navController, TutorName.trim(), TutorProfession.trim(), StudyPrice.trim())
+        ImagePicker(modifier,context, navController, tutorName.trim(), profession.trim(), studyPrice.trim())
 
         //---------------------IMAGE PICKER END-----------------------------------//
 
@@ -102,7 +139,7 @@ fun AddTutorScreen(navController:NavHostController){
 }
 
 @Composable
-fun ImagePicker(modifier: Modifier = Modifier, context: Context,navController: NavHostController, name:String, profession:String, price:String) {
+fun ImagePicker(modifier: Modifier = Modifier, context: Context,navController: NavHostController, name:String, quantity:String, price:String) {
     var hasImage by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
@@ -139,7 +176,7 @@ fun ImagePicker(modifier: Modifier = Modifier, context: Context,navController: N
             Button(onClick = {
                 //-----------WRITE THE UPLOAD LOGIC HERE---------------//
                 var productRepository = ProductViewModel(navController,context)
-                productRepository.uploadProduct(name, profession, price,imageUri!!)
+                productRepository.uploadProduct(name, quantity, price,imageUri!!)
 
 
             }) {

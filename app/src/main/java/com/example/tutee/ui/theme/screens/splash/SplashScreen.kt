@@ -90,7 +90,7 @@ fun SplashScreen(navController: NavHostController){
         val coroutine = rememberCoroutineScope()
         coroutine.launch {
             delay(6000)
-            navController.navigate(HOME_URL)
+            navController.navigate(LOGIN_URL)
         }
     }
 }
