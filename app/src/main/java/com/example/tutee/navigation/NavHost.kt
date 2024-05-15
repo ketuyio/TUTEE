@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.tutee.ui.theme.screens.home.TutorsScreen
+import com.example.tutee.ui.theme.screens.home.HomeScreen
 import com.example.tutee.ui.theme.screens.loginprefference.LoginScreen
 import com.example.tutee.ui.theme.screens.signup.SignupScreen
 import com.example.tutee.ui.theme.screens.splash.SplashScreen
@@ -35,7 +35,7 @@ fun AppNavHost(
             SignupScreen(navController = navController)
         }
         composable(HOME_URL){
-            TutorsScreen(navController = navController)
+            HomeScreen(navController = navController)
         }
         composable(UPLOAD_URL){
             AddTutorScreen(navController = navController)
